@@ -9,7 +9,7 @@ try:
 except Exception as e:
     st.error(f"Error loading models: {e}")
     dtr = None
-    preprocessor = None
+    preprocesser = None
 
 st.title('Crop Yield Prediction Per Country')
 
