@@ -3,8 +3,6 @@ import numpy as np
 import pickle
 
 
-dtr = pickle.load(open('dtr.pkl', 'rb'))
-preprocesser = pickle.load(open('preprocesser.pkl', 'rb'))
 
 def load_models():
     try:
