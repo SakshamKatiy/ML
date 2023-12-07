@@ -1,6 +1,8 @@
 import streamlit as st
 import numpy as np
 import pickle
+dtr = pickle.load(open('/path/to/dtr.pkl', 'rb'))
+preprocesser = pickle.load(open('/path/to/preprocesser.pkl', 'rb'))
 
 def load_models():
     try:
