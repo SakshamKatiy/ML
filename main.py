@@ -1,10 +1,12 @@
 import streamlit as st
 import numpy as np
 import pickle
-import os
-print("Current working directory:", os.getcwd())
 
-dtr = pickle.load(open('/absolute/path/to/dtr.pkl', 'rb'))
+
+from sklearn.linear_model import LinearRegression,Lasso,Ridge
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import mean_squared_error,r2_score
 
 
 def load_models():
@@ -27,6 +29,23 @@ st.title('Crop Yield Prediction Per Country')
 
 dtr, preprocesser = load_models()
 
+models = {
+    'lr':LinearRegression(),
+    'lss':Lasso(),
+    'rg':Ridge(),
+    'Knr':KNeighborsRegressor(),
+    'dtr':DecisionTreeRegressor()
+}
+
+dtr = DecisionTreeRegressor()
+dtr.fit(x_train_dummy,y_train)
+dtr.predict(x_test_dummy)
+for name, mod in models.items():
+    mod.fit(x_train_dummy,y_train)
+    y_pred = mod.predict(x_test_dummy)
+    
+    print(f"{name} MSE : {mean_squared_error(y_test,y_pred)} Score {r2_score(y_test,y_pred)}")
+
 if dtr is not None and preprocesser is not None:
     st.markdown('## Crop Features Here')
 
@@ -41,8 +60,21 @@ if dtr is not None and preprocesser is not None:
 
     item_option = ["Maize","Potatoes","Wheat","Rice, paddy","Soybeans","Sweet potatoes","Cassava","Yams","Plantains and others"] 
     item = st.selectbox('Item', item_option)
-
+x_train_dummy = preprocesser.fit_transform(x_train)
+x_test_dummy = preprocesser.transform(x_test)
     if st.button('Predict'):
+        from sklearn.preprocessing import OneHotEncoder,StandardScaler
+        from sklearn.compose import ColumnTransformer
+        ohe = OneHotEncoder(drop = 'first')
+        scaler = StandardScaler()
+        preprocesser = ColumnTransformer(
+        transformers = [
+            ('onehotencoder',ohe,[0,1]),
+            ('standrization',scaler,[2,3,4,5])
+        ],
+        remainder = 'passthrough'
+        )
+        
         predicted_value = predict_yield(dtr, preprocesser, area, item, year, average_rain_fall_mm_per_year, pesticides_tonnes, avg_temp)
 
         st.markdown('## Predicted Yield Productions:')
