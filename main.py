@@ -5,7 +5,7 @@ import pickle
 try:
     # Loading models
     dtr = pickle.load(open('dtr.pkl', 'rb'))
-    preprocesser = pickle.load(open('preprocesser.pkl', 'rb'))
+    
 except Exception as e:
     st.error(f"Error loading models: {e}")
     dtr = None
@@ -28,13 +28,11 @@ area = st.selectbox('Area', area_options)
 item_option = ["Maize","Potatoes","Wheat","Rice, paddy","Soybeans","Sweet potatoes","Cassava","Yams","Plantains and others"] 
 item= st.selectbox('Item',item_option)
 
-dtr = DecisionTreeRegressor()
-dtr.fit(x_train_dummy,y_train)
-dtr.predict(x_test_dummy)
+
 
 if st.button('Predict'):
     features = np.array([[area, item, year, average_rain_fall_mm_per_year, pesticides_tonnes, avg_temp]])
-    transformed_features = preprocesser.transform(features) 
+   
     predicted_value = dtr.predict(transformed_features).reshape(1, -1)
 
     st.markdown('## Predicted Yield Productions:')
