@@ -1,7 +1,10 @@
 import streamlit as st
 import numpy as np
 import pickle
+import os
+print("Current working directory:", os.getcwd())
 
+dtr = pickle.load(open('/absolute/path/to/dtr.pkl', 'rb'))
 
 
 def load_models():
