@@ -55,7 +55,6 @@ if dtr is not None and preprocesser is not None:
     item = st.selectbox('Item', item_option)
 
 if st.button('Predict'):
-        predicted_value = predict_yield(dtr, preprocesser, area, item, year, average_rain_fall_mm_per_year, pesticides_tonnes, avg_temp)
-
-        st.markdown('## Predicted Yield Productions:')
-        st.write(predicted_value)
+    predicted_value = predict_yield(dtr, preprocesser, area, item, year, average_rain_fall_mm_per_year, pesticides_tonnes, avg_temp)
+    st.markdown('## Predicted Yield Productions:')
+    st.write(predicted_value)
